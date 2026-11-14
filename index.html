@@ -1,149 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AllTools Hub offers free and easy online tools for everyone.">
-<title>AllTools Hub - Free Online Tools</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f7f9fc;color:#172033}
-header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5eaf1}
-.logo{font-size:23px;font-weight:800;color:#2563eb}
-nav a{margin-left:20px;text-decoration:none;color:#475569}
-.hero{text-align:center;padding:75px 20px 55px;background:linear-gradient(135deg,#eaf2ff,#f8fbff)}
-.hero h1{font-size:clamp(32px,5vw,52px);margin:0 0 15px}
-.hero p{color:#64748b;font-size:18px}
-.search{margin:25px auto 0;max-width:500px}
-input,textarea,button{font:inherit}
-.search input{width:100%;padding:15px;border:1px solid #cbd5e1;border-radius:10px}
-.container{max-width:1100px;margin:45px auto;padding:0 20px}
-h2{margin-bottom:10px}
-.subtitle{color:#64748b}
-.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:25px}
-.card{background:white;border:1px solid #e5eaf1;border-radius:14px;padding:23px;box-shadow:0 4px 15px #0f172a08}
-.card h3{margin:10px 0}
-.card p{color:#64748b;line-height:1.5}
-.icon{font-size:30px}
-button{background:#2563eb;color:white;border:0;border-radius:8px;padding:11px 17px;cursor:pointer}
-button:hover{background:#1d4ed8}
-.panel{display:none;background:white;padding:25px;border:1px solid #e5eaf1;border-radius:14px;margin-top:30px}
-.panel input,.panel textarea{width:100%;padding:12px;margin:9px 0 15px;border:1px solid #cbd5e1;border-radius:8px}
-.result{font-weight:bold;color:#2563eb;margin-top:12px}
-footer{text-align:center;padding:30px;background:#fff;color:#64748b;margin-top:60px}
-@media(max-width:600px){header{padding:16px 5%}nav a{margin-left:8px;font-size:13px}.hero{padding:55px 15px}}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AllTools Hub - Free Online Tools for Text, Calculators and Developers</title>
+<meta name="description" content="Free online tools that run in your browser: word counter, loan and GST calculators, JSON formatter, password generator, unit converters and more. No sign-up.">
+<link rel="canonical" href="https://alltools-hub.pages.dev/">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AllTools Hub">
+<meta property="og:title" content="AllTools Hub - Free Online Tools for Text, Calculators and Developers">
+<meta property="og:description" content="Free online tools that run in your browser: word counter, loan and GST calculators, JSON formatter, password generator, unit converters and more. No sign-up.">
+<meta property="og:url" content="https://alltools-hub.pages.dev/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<script src="/site.js"></script>
 </head>
 <body>
-<header>
-<div class="logo">AllTools Hub</div>
-<nav><a href="#tools">Tools</a><a href="#about">About</a></nav>
-</header>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap bar">
+<a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0e5a48"/><rect x="7" y="7" width="8" height="8" rx="2" fill="#fff"/><rect x="17" y="7" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="7" y="17" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="17" y="17" width="8" height="8" rx="2" fill="#b08a2e"/></svg><span>AllTools Hub</span></a>
+<nav class="nav" aria-label="Main"><a href="/#all-tools">All tools</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+<button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+</div></header>
+<main id="main">
 
-<section class="hero">
-<h1>Free Online Tools for Everyone</h1>
-<p>Simple, useful and free tools to make your daily work easier.</p>
-<div class="search">
-<input id="search" placeholder="Search for a tool..." oninput="filterTools()">
+<section class="hero"><div class="wrap">
+<h1>Free online tools that run in your browser</h1>
+<p class="lead">Count words, work out a loan, format JSON or make a strong password. No sign-up, and what you type stays on your device.</p>
+<div class="search" role="search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<input id="q" type="search" placeholder="Search 19 tools, for example &quot;loan&quot; or &quot;json&quot;" aria-label="Search tools" autocomplete="off">
 </div>
+<ul class="cats" id="categories"><li><a href="#cat-text">Text Tools</a></li><li><a href="#cat-calc">Calculators</a></li><li><a href="#cat-dev">Developer Tools</a></li><li><a href="#cat-unit">Unit Converters</a></li><li><a href="#cat-other">Other Tools</a></li></ul>
+<ul class="trust"><li>Free to use</li><li>No sign-up</li><li>Your data stays in your browser</li></ul>
+</div></section>
+
+<div class="wrap" id="results" hidden>
+<section class="section"><div class="section-head"><h2>Search results</h2><p id="results-count"></p></div><div class="grid" id="results-grid"></div></section>
+</div>
+
+<div id="browse">
+<div class="wrap">
+<section class="section"><div class="section-head"><h2>Featured tools</h2></div>
+<div class="feature-grid"><a class="feature" href="/age-calculator"><h3>Age Calculator</h3><p>Find your exact age in years, months and days.</p></a><a class="feature" href="/emi-calculator"><h3>EMI Calculator</h3><p>Work out the monthly payment on a loan.</p></a><a class="feature" href="/json-formatter"><h3>JSON Formatter and Validator</h3><p>Format, minify and check JSON data.</p></a></div></section>
+<section class="section"><div class="section-head"><h2>Popular tools</h2></div><div class="grid"><a class="card" href="/word-counter"><span class="ico" aria-hidden="true">Aa</span><span class="card-t">Word Counter</span><span class="card-d">Count words, characters, sentences and reading time.</span></a><a class="card" href="/case-converter"><span class="ico" aria-hidden="true">aA</span><span class="card-t">Case Converter</span><span class="card-d">Change text to uppercase, lowercase, title case and more.</span></a><a class="card" href="/gst-calculator"><span class="ico" aria-hidden="true">%</span><span class="card-t">GST Calculator</span><span class="card-d">Add GST to a price or remove it from a total.</span></a><a class="card" href="/percentage-calculator"><span class="ico" aria-hidden="true">÷%</span><span class="card-t">Percentage Calculator</span><span class="card-d">Find a percentage, or a percentage increase or decrease.</span></a><a class="card" href="/bmi-calculator"><span class="ico" aria-hidden="true">BMI</span><span class="card-t">BMI Calculator</span><span class="card-d">Calculate your Body Mass Index from height and weight.</span></a><a class="card" href="/password-generator"><span class="ico" aria-hidden="true">***</span><span class="card-t">Password Generator</span><span class="card-d">Create a strong random password in one click.</span></a></div></section>
+<section class="section"><div class="section-head"><h2>Recently added</h2></div><div class="grid"><a class="card" href="/case-converter"><span class="ico" aria-hidden="true">aA</span><span class="card-t">Case Converter</span><span class="card-d">Change text to uppercase, lowercase, title case and more.</span></a><a class="card" href="/remove-duplicate-lines"><span class="ico" aria-hidden="true">≡</span><span class="card-t">Remove Duplicate Lines</span><span class="card-d">Delete repeated lines from a list and keep each line once.</span></a><a class="card" href="/text-to-slug"><span class="ico" aria-hidden="true">-/-</span><span class="card-t">Text to Slug Converter</span><span class="card-d">Turn a title into a clean, web-friendly URL slug.</span></a><a class="card" href="/percentage-calculator"><span class="ico" aria-hidden="true">÷%</span><span class="card-t">Percentage Calculator</span><span class="card-d">Find a percentage, or a percentage increase or decrease.</span></a><a class="card" href="/discount-calculator"><span class="ico" aria-hidden="true">−%</span><span class="card-t">Discount Calculator</span><span class="card-d">See the sale price and how much you save.</span></a><a class="card" href="/bmi-calculator"><span class="ico" aria-hidden="true">BMI</span><span class="card-t">BMI Calculator</span><span class="card-d">Calculate your Body Mass Index from height and weight.</span></a></div></section>
+<section class="section" id="all-tools"><div class="section-head"><h2>All tools by category</h2><p>19 tools</p></div>
+<div class="cat-block" id="cat-text"><h3>Text Tools <span>Count, clean and convert text.</span></h3><div class="grid"><a class="card" href="/word-counter"><span class="ico" aria-hidden="true">Aa</span><span class="card-t">Word Counter</span><span class="card-d">Count words, characters, sentences and reading time.</span></a><a class="card" href="/case-converter"><span class="ico" aria-hidden="true">aA</span><span class="card-t">Case Converter</span><span class="card-d">Change text to uppercase, lowercase, title case and more.</span></a><a class="card" href="/remove-duplicate-lines"><span class="ico" aria-hidden="true">≡</span><span class="card-t">Remove Duplicate Lines</span><span class="card-d">Delete repeated lines from a list and keep each line once.</span></a><a class="card" href="/text-to-slug"><span class="ico" aria-hidden="true">-/-</span><span class="card-t">Text to Slug Converter</span><span class="card-d">Turn a title into a clean, web-friendly URL slug.</span></a></div></div>
+<div class="cat-block" id="cat-calc"><h3>Calculators <span>Money, health, dates and percentages.</span></h3><div class="grid"><a class="card" href="/gst-calculator"><span class="ico" aria-hidden="true">%</span><span class="card-t">GST Calculator</span><span class="card-d">Add GST to a price or remove it from a total.</span></a><a class="card" href="/percentage-calculator"><span class="ico" aria-hidden="true">÷%</span><span class="card-t">Percentage Calculator</span><span class="card-d">Find a percentage, or a percentage increase or decrease.</span></a><a class="card" href="/discount-calculator"><span class="ico" aria-hidden="true">−%</span><span class="card-t">Discount Calculator</span><span class="card-d">See the sale price and how much you save.</span></a><a class="card" href="/bmi-calculator"><span class="ico" aria-hidden="true">BMI</span><span class="card-t">BMI Calculator</span><span class="card-d">Calculate your Body Mass Index from height and weight.</span></a><a class="card" href="/age-calculator"><span class="ico" aria-hidden="true">Age</span><span class="card-t">Age Calculator</span><span class="card-d">Find your exact age in years, months and days.</span></a><a class="card" href="/emi-calculator"><span class="ico" aria-hidden="true">EMI</span><span class="card-t">EMI Calculator</span><span class="card-d">Work out the monthly payment on a loan.</span></a></div></div>
+<div class="cat-block" id="cat-dev"><h3>Developer Tools <span>Format, encode and generate data.</span></h3><div class="grid"><a class="card" href="/password-generator"><span class="ico" aria-hidden="true">***</span><span class="card-t">Password Generator</span><span class="card-d">Create a strong random password in one click.</span></a><a class="card" href="/json-formatter"><span class="ico" aria-hidden="true">{ }</span><span class="card-t">JSON Formatter and Validator</span><span class="card-d">Format, minify and check JSON data.</span></a><a class="card" href="/base64-encoder-decoder"><span class="ico" aria-hidden="true">B64</span><span class="card-t">Base64 Encoder and Decoder</span><span class="card-d">Convert text to Base64 and back again.</span></a><a class="card" href="/url-encoder-decoder"><span class="ico" aria-hidden="true">%20</span><span class="card-t">URL Encoder and Decoder</span><span class="card-d">Make text safe for web addresses, or decode it.</span></a><a class="card" href="/uuid-generator"><span class="ico" aria-hidden="true">ID</span><span class="card-t">UUID Generator</span><span class="card-d">Generate random unique IDs (UUID version 4).</span></a></div></div>
+<div class="cat-block" id="cat-unit"><h3>Unit Converters <span>Convert length, weight and temperature.</span></h3><div class="grid"><a class="card" href="/length-converter"><span class="ico" aria-hidden="true">m</span><span class="card-t">Length Converter</span><span class="card-d">Convert between metres, kilometres, miles, feet and more.</span></a><a class="card" href="/weight-converter"><span class="ico" aria-hidden="true">kg</span><span class="card-t">Weight Converter</span><span class="card-d">Convert between kilograms, pounds, ounces and more.</span></a><a class="card" href="/temperature-converter"><span class="ico" aria-hidden="true">°C</span><span class="card-t">Temperature Converter</span><span class="card-d">Convert between Celsius, Fahrenheit and Kelvin.</span></a></div></div>
+<div class="cat-block" id="cat-other"><h3>Other Tools <span>Handy everyday utilities.</span></h3><div class="grid"><a class="card" href="/random-number-generator"><span class="ico" aria-hidden="true">#</span><span class="card-t">Random Number Generator</span><span class="card-d">Pick random whole numbers between any two values.</span></a></div></div>
 </section>
-
-<main class="container" id="tools">
-<h2>Explore Our Tools</h2>
-<p class="subtitle">Useful tools, all in one place.</p>
-<div class="tools" id="toolGrid">
-<div class="card" data-name="word counter">
-<div class="icon">📝</div><h3>Word Counter</h3>
-<p>Count words and characters in your text instantly.</p>
-<button onclick="showTool('words')">Open Tool</button>
-</div>
-<div class="card" data-name="gst calculator">
-<div class="icon">🧮</div><h3>GST Calculator</h3>
-<p>Calculate GST amount and total price easily.</p>
-<button onclick="showTool('gst')">Open Tool</button>
-</div>
-<div class="card" data-name="password generator">
-<div class="icon">🔐</div><h3>Password Generator</h3>
-<p>Create a strong random password in seconds.</p>
-<button onclick="showTool('password')">Open Tool</button>
 </div>
 </div>
-
-<section class="panel" id="words">
-<h2>Word Counter</h2>
-<textarea id="textInput" rows="6" placeholder="Type or paste your text here..." oninput="countWords()"></textarea>
-<p id="wordResult" class="result">Words: 0 | Characters: 0</p>
-</section>
-
-<section class="panel" id="gst">
-<h2>GST Calculator</h2>
-<label>Amount (₹)</label>
-<input id="amount" type="number" min="0" placeholder="Enter amount">
-<label>GST Rate (%)</label>
-<input id="rate" type="number" min="0" value="18">
-<button onclick="calculateGST()">Calculate GST</button>
-<p id="gstResult" class="result"></p>
-</section>
-
-<section class="panel" id="password">
-<h2>Password Generator</h2>
-<label>Password length</label>
-<input id="passLength" type="number" min="6" max="64" value="16">
-<button onclick="generatePassword()">Generate Password</button>
-<p id="passResult" class="result"></p>
-</section>
 </main>
-
-<section class="container" id="about">
-<h2>About AllTools Hub</h2>
-<p class="subtitle">Our goal is to make useful online tools accessible to everyone, worldwide.</p>
-</section>
-
-<footer>© 2026 AllTools Hub. All rights reserved.</footer>
-
-<script>
-function showTool(id){
-document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
-document.getElementById(id).style.display='block';
-document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
-function filterTools(){
-let q=document.getElementById('search').value.toLowerCase();
-document.querySelectorAll('.card').forEach(card=>{
-card.style.display=card.dataset.name.includes(q)?'block':'none';
-});
-}
-function countWords(){
-let t=document.getElementById('textInput').value;
-let words=t.trim()?t.trim().split(/\s+/).length:0;
-document.getElementById('wordResult').textContent=
-'Words: '+words+' | Characters: '+t.length;
-}
-function calculateGST(){
-let a=Number(document.getElementById('amount').value);
-let r=Number(document.getElementById('rate').value);
-if(a<0||r<0||!Number.isFinite(a)||!Number.isFinite(r)){
-document.getElementById('gstResult').textContent='Please enter valid values.';
-return;
-}
-let tax=a*r/100;
-document.getElementById('gstResult').textContent=
-'GST: ₹'+tax.toFixed(2)+' | Total: ₹'+(a+tax).toFixed(2);
-}
-function generatePassword(){
-let len=Number(document.getElementById('passLength').value);
-if(!Number.isInteger(len)||len<6||len>64){
-document.getElementById('passResult').textContent='Choose a length from 6 to 64.';
-return;
-}
-let chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
-let result='';
-let random=new Uint32Array(len);
-crypto.getRandomValues(random);
-for(let n of random)result+=chars[n%chars.length];
-document.getElementById('passResult').textContent=result;
-}
-</script>
+<footer class="site-footer"><div class="wrap">
+<div class="foot">
+<div><h2>AllTools Hub</h2><p>Free online tools that work in your browser. Nothing you type is sent to our servers.</p></div>
+<div><h2>Tool categories</h2><ul><li><a href="/#cat-text">Text Tools</a></li><li><a href="/#cat-calc">Calculators</a></li><li><a href="/#cat-dev">Developer Tools</a></li><li><a href="/#cat-unit">Unit Converters</a></li><li><a href="/#cat-other">Other Tools</a></li></ul></div>
+<div><h2>Company</h2><ul><li><a href="/about">About us</a></li><li><a href="/contact">Contact us</a></li></ul></div>
+<div><h2>Legal</h2><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms and Conditions</a></li><li><a href="/disclaimer">Disclaimer</a></li></ul></div>
+</div>
+<p class="copy">&copy; 2026 AllTools Hub. All rights reserved.</p>
+</div></footer>
+<script src="/tools.js"></script>
+<script src="/home.js"></script>
 </body>
 </html>
