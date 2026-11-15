@@ -17,13 +17,68 @@ const write = (rel, text) => {
   fs.writeFileSync(f, text);
 };
 
-const LOGO = '<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0e5a48"/><rect x="7" y="7" width="8" height="8" rx="2" fill="#fff"/><rect x="17" y="7" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="7" y="17" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="17" y="17" width="8" height="8" rx="2" fill="#b08a2e"/></svg>';
-write('favicon.svg', LOGO.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', ''));
+/* ---------- Golden Ratio art ----------
+   A golden rectangle (w x h, Fibonacci sizes such as 610 x 377) is cut into squares: left, top, right, bottom, repeat.
+   A quarter-circle arc in each square joins into the Fibonacci spiral. */
+function spiral(W, H, max) {
+  let x = 0, y = 0, w = W, h = H, S = null;
+  const rects = [], arcs = [], sides = ['left', 'top', 'right', 'bottom'];
+  for (let i = 0; i < max; i++) {
+    const s = Math.min(w, h), side = sides[i % 4];
+    if ((side === 'left' || side === 'right') !== (w > h) || s < 2) break;
+    let sx = x, sy = y, restX, restY;
+    if (side === 'left') { restX = x + s; x += s; w -= s; }
+    else if (side === 'top') { restY = y + s; y += s; h -= s; }
+    else if (side === 'right') { sx = x + w - s; restX = sx; w -= s; }
+    else { sy = y + h - s; restY = sy; h -= s; }
+    const corners = [[sx, sy], [sx + s, sy], [sx, sy + s], [sx + s, sy + s]];
+    const adj = (a, b) => (a[0] === b[0]) !== (a[1] === b[1]);
+    const onRest = c => (restX !== undefined ? c[0] === restX : c[1] === restY);
+    if (!S) S = [sx, side === 'left' ? sy + s : sy + s]; // first arc starts at the bottom-left corner of the first square
+    const same = (a, b) => a[0] === b[0] && a[1] === b[1];
+    const C = corners.find(c => adj(c, S) && onRest(c));
+    const E = corners.find(c => adj(c, C) && !same(c, S));
+    const cross = (S[0] - C[0]) * (E[1] - C[1]) - (S[1] - C[1]) * (E[0] - C[0]);
+    rects.push([sx, sy, s]); arcs.push({ S, E, s, sweep: cross > 0 ? 1 : 0 });
+    S = E;
+  }
+  const d = 'M' + arcs[0].S.join(' ') + arcs.map(a => ` A${a.s} ${a.s} 0 0 ${a.sweep} ${a.E.join(' ')}`).join('');
+  return { rects, d, eye: arcs[arcs.length - 1].E };
+}
+const G = spiral(610, 377, 12), GL = spiral(55, 34, 5);
+const numText = r => { if (r[2] < 34) return ''; const fs = Math.min(Math.max(r[2] * 0.085, 8), 24); return `<text x="${r[0] + r[2] * 0.05 + 2}" y="${r[1] + fs + r[2] * 0.04 + 2}" font-size="${fs.toFixed(1)}">${r[2]}</text>`; };
+const ART = `<svg class="art" viewBox="-4 -4 618 385" aria-hidden="true" focusable="false"><g class="sq">${G.rects.map(r => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[2]}"/>`).join('')}</g><g class="nums">${G.rects.map(numText).join('')}</g><path class="sp" pathLength="1" d="${G.d}"/></svg>`;
+const SUN = (() => { const a = Math.PI * (3 - Math.sqrt(5)); let s = ''; for (let i = 1; i <= 144; i++) { const r = 7.3 * Math.sqrt(i), t = i * a; s += `<circle cx="${(r * Math.cos(t)).toFixed(1)}" cy="${(r * Math.sin(t)).toFixed(1)}" r="${(1 + i / 144 * 2.1).toFixed(1)}"/>`; } return `<svg class="m-svg" viewBox="-92 -92 184 184" aria-hidden="true" focusable="false">${s}</svg>`; })();
+const RECT = '<svg class="m-svg m-rect" viewBox="0 0 220 150" aria-hidden="true" focusable="false"><rect x="14" y="14" width="161.8" height="100"/><line x1="114" y1="14" x2="114" y2="114"/><path d="M14 114 A100 100 0 0 1 114 14" class="arc"/><text x="94" y="136" text-anchor="middle">&phi; = 1.618</text><text x="188" y="68">1</text></svg>';
+const FIB = (() => { const f = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]; let rows = ''; for (let i = 1; i < f.length; i++) rows += `<tr><td>${f[i]} / ${f[i - 1]}</td><td>${(f[i] / f[i - 1]).toFixed(4)}</td></tr>`; return `<table class="fib"><thead><tr><th scope="col">Fibonacci pair</th><th scope="col">Ratio</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>&phi; (limit)</td><td>${((1 + Math.sqrt(5)) / 2).toFixed(4)}</td></tr></tfoot></table>`; })();
+const MATH = `<section class="math" aria-label="The mathematics behind the design"><div class="math-grid">
+<figure><div class="m-art">${RECT}</div><figcaption><h3>The golden rectangle</h3><p>Cut a square from a rectangle with sides in the ratio &phi; to 1, and what is left is another golden rectangle. Repeat, and the corners trace the spiral on the homepage.</p></figcaption></figure>
+<figure><div class="m-art">${SUN}</div><figcaption><h3>The golden angle</h3><p>Turn 137.5 degrees (360 divided by &phi; squared) for each new seed and the seeds pack without gaps, as in a sunflower. These are 144 seeds.</p></figcaption></figure>
+<figure><div class="m-art">${FIB}</div><figcaption><h3>Fibonacci numbers</h3><p>Divide each Fibonacci number by the one before it and the answer settles on &phi; &asymp; 1.618.</p></figcaption></figure>
+</div></section>`;
+const LOGO = `<svg viewBox="-3 -3 61 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2">${GL.rects.map(r => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[2]}"/>`).join('')}</g><path d="${GL.d}" fill="none" stroke="#b8923a" stroke-width="2.6" stroke-linecap="round"/></svg>`;
 
-const THEME_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>';
+write('favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-9 -9 73 52"><rect x="-9" y="-9" width="73" height="52" rx="9" fill="#1d1b18"/><g fill="none" stroke="#f8f3e6" stroke-opacity=".45" stroke-width="1.2">${GL.rects.map(r => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[2]}"/>`).join('')}</g><path d="${GL.d}" fill="none" stroke="#d4ad55" stroke-width="3" stroke-linecap="round"/></svg>`);
+
+/* Golden Ratio Open Graph Social Preview Image (1200x630) */
+const OG_SPIRAL = spiral(377, 233, 9);
+write('og-image.svg', `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#14110d"/>
+  <g transform="translate(730, 198)" stroke="#b8923a" fill="none">
+    <g stroke-opacity=".35" stroke-width="1.5">${OG_SPIRAL.rects.map(r => `<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[2]}"/>`).join('')}</g>
+    <path d="${OG_SPIRAL.d}" stroke="#d9b05a" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <text x="100" y="270" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-weight="700" font-size="72" fill="#f2ead7">AllTools Hub</text>
+  <text x="100" y="340" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-style="italic" font-size="32" fill="#d9b05a">Everyday tools, drawn to the golden ratio</text>
+  <text x="100" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#f2ead7" opacity=".75">Free browser-based tools for text, calculation and code.</text>
+  <text x="100" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#f2ead7" opacity=".5">Private &bull; Fast &bull; No sign-up &bull; &phi; &asymp; 1.618</text>
+</svg>`);
+
+const THEME_ICON = '<svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
 
 function layout(o) {
   const url = SITE + o.path;
+  const ld = o.ld ? `\n<script type="application/ld+json">${(typeof o.ld === 'string' ? o.ld : JSON.stringify(o.ld)).replace(/</g, '\\u003c')}</script>` : '';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,16 +93,18 @@ function layout(o) {
 <meta property="og:title" content="${esc(o.title)}">
 <meta property="og:description" content="${esc(o.desc)}">
 <meta property="og:url" content="${url}">
-<meta name="twitter:card" content="summary">${o.noindex ? '\n<meta name="robots" content="noindex">' : ''}
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="${SITE}/og-image.svg">
+<meta name="twitter:image" content="${SITE}/og-image.svg">${o.noindex ? '\n<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
-<script src="/site.js"></script>
+<script src="/site.js"></script>${ld}
 </head>
 <body${o.bodyAttr || ''}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap bar">
-<a class="brand" href="/">${LOGO}<span>AllTools Hub</span></a>
-<nav class="nav" aria-label="Main"><a href="/#all-tools">All tools</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+<a class="brand" href="/index.html">${LOGO}<span>AllTools Hub</span></a>
+<nav class="nav" aria-label="Main"><a href="/index.html#all-tools">All tools</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
 <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark mode" aria-pressed="false">${THEME_ICON}</button>
 </div></header>
 <main id="main">
@@ -55,10 +112,9 @@ ${o.body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <div class="foot">
-<div><h2>AllTools Hub</h2><p>Free online tools that work in your browser. Nothing you type is sent to our servers.</p></div>
-<div><h2>Tool categories</h2><ul>${CATEGORIES.map(c => `<li><a href="/#cat-${c.id}">${esc(c.name)}</a></li>`).join('')}</ul></div>
-<div><h2>Company</h2><ul><li><a href="/about">About us</a></li><li><a href="/contact">Contact us</a></li></ul></div>
-<div><h2>Legal</h2><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms and Conditions</a></li><li><a href="/disclaimer">Disclaimer</a></li></ul></div>
+<div class="foot-about"><a class="brand" href="/index.html">${LOGO}<span>AllTools Hub</span></a><p>Free online tools that work in your browser. Nothing you type is sent to our servers.</p></div>
+<div><h2>Tools</h2><ul>${CATEGORIES.map(c => `<li><a href="/index.html#cat-${c.id}">${esc(c.name)}</a></li>`).join('')}</ul></div>
+<div><h2>Site</h2><ul><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li><li><a href="/privacy.html">Privacy Policy</a></li><li><a href="/terms.html">Terms and Conditions</a></li><li><a href="/disclaimer.html">Disclaimer</a></li></ul></div>
 </div>
 <p class="copy">&copy; 2026 AllTools Hub. All rights reserved.</p>
 </div></footer>
@@ -68,7 +124,7 @@ ${o.scripts || ''}
 `;
 }
 
-const card = t => `<a class="card" href="/${t.id}"><span class="ico" aria-hidden="true">${esc(t.icon)}</span><span class="card-t">${esc(t.name)}</span><span class="card-d">${esc(t.desc)}</span></a>`;
+const row = t => `<li><a href="/${t.id}.html"><span class="g" aria-hidden="true">${esc(t.icon)}</span><span class="n">${esc(t.name)}</span><span class="d">${esc(t.desc)}</span></a></li>`;
 
 /* ---------- home ---------- */
 function home() {
@@ -76,39 +132,55 @@ function home() {
   const featured = TOOLS.filter(t => t.featured).slice(0, 3);
   const recent = TOOLS.map((t, i) => [t, i]).sort((a, b) => (b[0].added > a[0].added ? 1 : b[0].added < a[0].added ? -1 : a[1] - b[1])).map(x => x[0]).slice(0, 6);
   const body = `
-<section class="hero"><div class="wrap">
-<h1>Free online tools that run in your browser</h1>
-<p class="lead">Count words, work out a loan, format JSON or make a strong password. No sign-up, and what you type stays on your device.</p>
+<section class="hero"><div class="wrap hero-grid">
+<div class="hero-text">
+<h1>Free online tools that work in your browser</h1>
+<p class="lead">Count words, work out a loan, format JSON or make a strong password. Every tool runs in your browser, so what you type stays on your device.</p>
 <div class="search" role="search">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-<input id="q" type="search" placeholder="Search ${TOOLS.length} tools, for example &quot;loan&quot; or &quot;json&quot;" aria-label="Search tools" autocomplete="off">
+<input id="q" type="search" placeholder="Search ${TOOLS.length} tools, e.g. &quot;loan&quot;" aria-label="Search tools" autocomplete="off">
+<button type="button" class="q-clear" id="q-clear" aria-label="Clear search" hidden>&times;</button>
 </div>
-<ul class="cats" id="categories">${CATEGORIES.map(c => `<li><a href="#cat-${c.id}">${esc(c.name)}</a></li>`).join('')}</ul>
-<ul class="trust"><li>Free to use</li><li>No sign-up</li><li>Your data stays in your browser</li></ul>
+<p class="cats-line" id="categories">${CATEGORIES.map(c => `<a href="#cat-${c.id}">${esc(c.name)} <span>${TOOLS.filter(t => t.cat === c.id).length}</span></a>`).join('')}</p>
+</div>
+<figure class="hero-art">${ART}<figcaption>Fibonacci squares inside a golden rectangle, 1 : 1.618.</figcaption></figure>
 </div></section>
 
 <div class="wrap" id="results" hidden>
-<section class="section"><div class="section-head"><h2>Search results</h2><p id="results-count"></p></div><div class="grid" id="results-grid"></div></section>
+<section class="block"><div class="block-head"><h2>Search results</h2><p id="results-count"></p></div><ul class="index-list" id="results-grid"></ul></section>
 </div>
 
-<div id="browse">
-<div class="wrap">
-<section class="section"><div class="section-head"><h2>Featured tools</h2></div>
-<div class="feature-grid">${featured.map(t => `<a class="feature" href="/${t.id}"><h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p></a>`).join('')}</div></section>
-<section class="section"><div class="section-head"><h2>Popular tools</h2></div><div class="grid">${popular.map(card).join('')}</div></section>
-<section class="section"><div class="section-head"><h2>Recently added</h2></div><div class="grid">${recent.map(card).join('')}</div></section>
-<section class="section" id="all-tools"><div class="section-head"><h2>All tools by category</h2><p>${TOOLS.length} tools</p></div>
+<div id="browse"><div class="wrap">
+<section class="block"><div class="block-head"><h2>Featured</h2></div>
+<div class="feature-grid">${featured.map((t, i) => `<a class="feature f${i + 1}" href="/${t.id}.html"><span class="f-ico" aria-hidden="true">${esc(t.icon)}</span><h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p></a>`).join('')}</div></section>
+<section class="block band"><div><div class="block-head"><h2>Popular</h2></div><ul class="index-list">${popular.map(row).join('')}</ul></div>
+<div><div class="block-head"><h2>Recently added</h2></div><ul class="plain-list">${recent.map(t => `<li><a href="/${t.id}.html">${esc(t.name)}</a></li>`).join('')}</ul></div></section>
+<section class="block" id="all-tools"><div class="block-head"><h2>All tools</h2><p>${TOOLS.length} tools in ${CATEGORIES.length} categories</p></div>
 ${CATEGORIES.map(c => {
   const list = TOOLS.filter(t => t.cat === c.id);
-  return list.length ? `<div class="cat-block" id="cat-${c.id}"><h3>${esc(c.name)} <span>${esc(c.blurb)}</span></h3><div class="grid">${list.map(card).join('')}</div></div>` : '';
+  return list.length ? `<div class="index-row" id="cat-${c.id}"><div class="index-cat"><h3>${esc(c.name)}</h3><p>${esc(c.blurb)}</p></div><ul class="index-list">${list.map(row).join('')}</ul></div>` : '';
 }).join('\n')}
 </section>
-</div>
-</div>`;
+</div></div>`;
   write('index.html', layout({
     title: 'AllTools Hub - Free Online Tools for Text, Calculators and Developers',
     desc: 'Free online tools that run in your browser: word counter, loan and GST calculators, JSON formatter, password generator, unit converters and more. No sign-up.',
-    path: '/', body, scripts: '<script src="/tools.js"></script>\n<script src="/home.js"></script>'
+    path: '/', body, scripts: '<script src="/tools.js"></script>\n<script src="/home.js"></script>',
+    ld: {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'AllTools Hub',
+      url: SITE + '/',
+      description: 'Free online tools that run in your browser: word counter, loan and GST calculators, JSON formatter, password generator, unit converters and more.',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: SITE + '/?q={search_term_string}'
+        },
+        'query-input': 'required name=search_term_string'
+      }
+    }
   }));
 }
 
@@ -117,24 +189,48 @@ function toolPage(t) {
   const cat = catOf(t.cat);
   const same = TOOLS.filter(x => x.cat === t.cat && x.id !== t.id);
   const others = TOOLS.filter(x => x.cat !== t.cat && x.id !== t.id);
-  const related = same.concat(others).slice(0, 4);
+  const related = same.concat(others).slice(0, 5);
   const body = `
 <div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/#cat-${cat.id}">${esc(cat.name)}</a> / ${esc(t.name)}</nav>
-<div class="tool-head"><h1>${esc(t.name)}</h1><p>${esc(t.intro)}</p></div>
-<div class="tool-card" id="tool-root"><noscript><p class="msg err">This tool needs JavaScript. Please turn it on in your browser settings and reload the page.</p></noscript></div>
-${t.note ? `<p class="tool-note"><strong>Please note:</strong> ${esc(t.note)}</p>` : ''}
-<div class="info">
-<section><h2>How to use this tool</h2><ol>${t.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></section>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/index.html">Home</a> / <a href="/index.html#cat-${cat.id}">${esc(cat.name)}</a> / ${esc(t.name)}</nav>
+<header class="tool-head"><h1>${esc(t.name)}</h1><p>${esc(t.intro)}</p></header>
+<div class="tool-layout">
+<div class="tool-main"><div class="tool-card" id="tool-root"><noscript><p class="msg err">This tool needs JavaScript. Please turn it on in your browser settings and reload the page.</p></noscript></div>
+${t.note ? `<p class="tool-note"><strong>Please note:</strong> ${esc(t.note)}</p>` : ''}</div>
+<aside class="tool-side" aria-label="Help">
+<section><h2>How to use this tool</h2><ol class="steps">${t.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></section>
 <section><h2>Your privacy</h2><p>This tool works inside your browser. What you type is not uploaded, saved or shared.</p></section>
+<section><h2>More tools</h2><ul class="plain-list">${related.map(x => `<li><a href="/${x.id}.html">${esc(x.name)}</a></li>`).join('')}</ul></section>
+</aside>
 </div>
-<section class="related"><h2>More tools you may like</h2><div class="grid">${related.map(card).join('')}</div></section>
 </div>`;
   write(`${t.id}.html`, layout({
     title: `${t.name} - Free Online Tool | AllTools Hub`,
     desc: `${t.desc} Free, no sign-up, and it works in your browser.`,
     path: `/${t.id}`, body, bodyAttr: ` data-tool="${t.id}"`,
-    scripts: '<script src="/tools.js"></script>\n<script src="/tool.js"></script>'
+    scripts: '<script src="/tools.js"></script>\n<script src="/tool.js"></script>',
+    ld: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: t.name,
+        description: `${t.desc} Free, no sign-up, and it works in your browser.`,
+        url: `${SITE}/${t.id}`,
+        applicationCategory: 'UtilityApplication',
+        operatingSystem: 'Any',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        browserRequirements: 'Requires JavaScript'
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
+          { '@type': 'ListItem', position: 2, name: cat.name, item: `${SITE}/#cat-${cat.id}` },
+          { '@type': 'ListItem', position: 3, name: t.name, item: `${SITE}/${t.id}` }
+        ]
+      }
+    ]
   }));
 }
 
@@ -151,8 +247,10 @@ const PAGES = {
 <li><strong>Free.</strong> You do not need an account to use any tool.</li></ul>
 <h2>What is available today</h2>
 <p>There are currently ${TOOLS.length} tools in ${CATEGORIES.length} categories: text tools, calculators, developer tools, unit converters and other everyday tools. We plan to add more over time, and we test each one before it is published.</p>
+<h2>About the design</h2>
+<p>The look of the site is built on the golden ratio (about 1.618) and the Fibonacci numbers. Columns split in that ratio, type sizes step by it, and spacing follows the Fibonacci sequence. The maths is there to keep things balanced. It should never get in the way of the tools. The three figures below show where it comes from.</p>
 <h2>Tell us what you need</h2>
-<p>Found a mistake, or want a new tool? Please visit our <a href="/contact">contact page</a>.</p>`
+<p>Found a mistake, or want a new tool? Please visit our <a href="/contact.html">contact page</a>.</p>`
   },
   contact: {
     title: 'Contact AllTools Hub', desc: 'Report a bug, ask a question or suggest a new tool for AllTools Hub.',
@@ -181,7 +279,7 @@ const PAGES = {
 <h2>Changes to this policy</h2>
 <p>If we add features such as analytics or advertising, we will update this page before they start and change the date above.</p>
 <h2>Questions</h2>
-<p>If you have a question about privacy, please use our <a href="/contact">contact page</a>.</p>`
+<p>If you have a question about privacy, please use our <a href="/contact.html">contact page</a>.</p>`
   },
   terms: {
     title: 'Terms and Conditions - AllTools Hub', desc: 'The terms for using AllTools Hub and its free online tools.',
@@ -198,7 +296,7 @@ const PAGES = {
 <h2>Changes</h2>
 <p>We may change the website, the tools or these terms at any time. The date above shows the latest update.</p>
 <h2>Contact</h2>
-<p>Questions about these terms? Please use our <a href="/contact">contact page</a>.</p>`
+<p>Questions about these terms? Please use our <a href="/contact.html">contact page</a>.</p>`
   },
   disclaimer: {
     title: 'Disclaimer - AllTools Hub', desc: 'Important notes about the calculators and tools on AllTools Hub. Results are for information only.',
@@ -211,19 +309,19 @@ const PAGES = {
 <h2>Security tools</h2>
 <p>The password generator creates random passwords in your browser. You are responsible for keeping your passwords safe. Base64 is an encoding, not encryption, and does not protect secret information.</p>
 <h2>Accuracy</h2>
-<p>We test our tools, but mistakes can still happen. If you find one, please tell us on the <a href="/contact">contact page</a>.</p>`
+<p>We test our tools, but mistakes can still happen. If you find one, please tell us on the <a href="/contact.html">contact page</a>.</p>`
   }
 };
 
 function infoPage(name) {
   const p = PAGES[name];
-  write(`${name}.html`, layout({ title: p.title, desc: p.desc, path: `/${name}`, body: `<div class="wrap"><div class="prose">${p.body}</div></div>` }));
+  write(`${name}.html`, layout({ title: p.title, desc: p.desc, path: `/${name}`, body: `<div class="wrap"><div class="prose">${p.body}</div>${name === 'about' ? MATH : ''}</div>` }));
 }
 
 function notFound() {
   write('404.html', layout({
     title: 'Page not found - AllTools Hub', desc: 'This page could not be found.', path: '/404.html', noindex: true,
-    body: `<div class="wrap"><div class="prose"><h1>Page not found</h1><p>The page you are looking for does not exist or has moved.</p><p><a class="btn" href="/">Go to the homepage</a></p></div></div>`
+    body: `<div class="wrap"><div class="prose notfound"><div class="nf-art" aria-hidden="true">${ART}</div><h1>Page not found</h1><p>The page you are looking for does not exist or has moved.</p><p><a class="btn" href="/index.html">Go to the homepage</a></p></div></div>`
   }));
 }
 

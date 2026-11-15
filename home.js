@@ -12,13 +12,15 @@
   window.CATEGORIES.forEach(function (c) { catName[c.id] = c.name; });
 
   function card(t) {
-    var a = document.createElement('a');
-    a.className = 'card'; a.href = '/' + t.id;
-    var i = document.createElement('span'); i.className = 'ico'; i.setAttribute('aria-hidden', 'true'); i.textContent = t.icon;
-    var n = document.createElement('span'); n.className = 'card-t'; n.textContent = t.name;
-    var d = document.createElement('span'); d.className = 'card-d'; d.textContent = t.desc;
-    a.appendChild(i); a.appendChild(n); a.appendChild(d);
-    return a;
+    var li = document.createElement('li'), a = document.createElement('a');
+    a.href = '/' + t.id + '.html';
+    [['g', t.icon], ['n', t.name], ['d', t.desc]].forEach(function (p) {
+      var s = document.createElement('span'); s.className = p[0]; s.textContent = p[1];
+      if (p[0] === 'g') s.setAttribute('aria-hidden', 'true');
+      a.appendChild(s);
+    });
+    li.appendChild(a);
+    return li;
   }
 
   function search() {
@@ -38,8 +40,15 @@
     }
   }
 
-  q.addEventListener('input', search);
-  q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; search(); } });
+  var clear = document.getElementById('q-clear');
+  function sync() { if (clear) clear.hidden = !q.value; }
+  q.addEventListener('input', function () { sync(); search(); });
+  if (clear) clear.addEventListener('click', function () { q.value = ''; sync(); search(); q.focus(); });
+  document.addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
+    if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); q.focus(); }
+  });
+  q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; sync(); search(); } });
   var params = new URLSearchParams(location.search);
-  if (params.get('q')) { q.value = params.get('q'); search(); }
+  if (params.get('q')) { q.value = params.get('q'); sync(); search(); }
 })();

@@ -290,7 +290,13 @@
         var bu = Date.UTC(b.y, b.m - 1, b.d), au = Date.UTC(a.y, a.m - 1, a.d);
         if (bu > au) throw new Error('The date of birth must be before the "Age on this date" date.');
         var y = a.y - b.y, m = a.m - b.m, d = a.d - b.d;
-        if (d < 0) { m--; d += new Date(a.y, a.m - 1, 0).getDate(); }
+        if (d < 0) {
+          m--;
+          var pm = a.m - 1, py = a.y; if (pm < 1) { pm = 12; py--; }
+          var dim = new Date(py, pm, 0).getDate();
+          var ann = Math.min(b.d, dim);
+          d = Math.round((Date.UTC(a.y, a.m - 1, a.d) - Date.UTC(py, pm - 1, ann)) / 864e5);
+        }
         if (m < 0) { y--; m += 12; }
         var next = Date.UTC(a.y, b.m - 1, b.d); if (next < au) next = Date.UTC(a.y + 1, b.m - 1, b.d);
         var left = Math.round((next - au) / 864e5), days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

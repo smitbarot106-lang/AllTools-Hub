@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#14110d"/>
+  <g transform="translate(730, 198)" stroke="#b8923a" fill="none">
+    <g stroke-opacity=".35" stroke-width="1.5"><rect x="0" y="0" width="233" height="233"/><rect x="233" y="0" width="144" height="144"/><rect x="288" y="144" width="89" height="89"/><rect x="233" y="178" width="55" height="55"/><rect x="233" y="144" width="34" height="34"/><rect x="267" y="144" width="21" height="21"/><rect x="275" y="165" width="13" height="13"/><rect x="267" y="170" width="8" height="8"/><rect x="267" y="165" width="5" height="5"/></g>
+    <path d="M0 233 A233 233 0 0 1 233 0 A144 144 0 0 1 377 144 A89 89 0 0 1 288 233 A55 55 0 0 1 233 178 A34 34 0 0 1 267 144 A21 21 0 0 1 288 165 A13 13 0 0 1 275 178 A8 8 0 0 1 267 170 A5 5 0 0 1 272 165" stroke="#d9b05a" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <text x="100" y="270" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-weight="700" font-size="72" fill="#f2ead7">AllTools Hub</text>
+  <text x="100" y="340" font-family="'Palatino Linotype', Palatino, Georgia, serif" font-style="italic" font-size="32" fill="#d9b05a">Everyday tools, drawn to the golden ratio</text>
+  <text x="100" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#f2ead7" opacity=".75">Free browser-based tools for text, calculation and code.</text>
+  <text x="100" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#f2ead7" opacity=".5">Private &bull; Fast &bull; No sign-up &bull; &phi; &asymp; 1.618</text>
+</svg>

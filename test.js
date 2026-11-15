@@ -94,7 +94,7 @@ throws('bmi empty', () => call('bmi-calculator', { w: '', h: '170' }), 'weight')
 
 // age
 r = call('age-calculator', { dob: '2000-01-15', asof: '2026-11-14' }); eq('age basic', stat(r, 'Age'), '26 years, 9 months, 30 days');
-r = call('age-calculator', { dob: '2000-02-29', asof: '2001-03-01' }); eq('age leap', stat(r, 'Age'), '1 year, 0 months, 0 days');
+r = call('age-calculator', { dob: '2000-02-29', asof: '2001-03-01' }); eq('age leap', stat(r, 'Age'), '1 year, 0 months, 1 day');
 r = call('age-calculator', { dob: '2000-03-31', asof: '2000-04-30' }); eq('age month end', stat(r, 'Age'), '0 years, 0 months, 30 days');
 r = call('age-calculator', { dob: '2000-05-10', asof: '2026-05-10' }); eq('age birthday today', stat(r, 'Next birthday'), 'Today'); eq('age exact', stat(r, 'Age'), '26 years, 0 months, 0 days');
 r = call('age-calculator', { dob: '2000-01-01', asof: '2000-01-02' }); r = call('age-calculator', { dob: '2000-01-01', asof: '2000-01-02' }); eq('age 1 day', stat(r, 'Age'), '0 years, 0 months, 1 day');
@@ -103,6 +103,11 @@ r = call('age-calculator', { dob: '1990-12-25', asof: '2026-11-14' }); eq('age n
 ok('age today default', /years/.test(stat(call('age-calculator', { dob: '1990-01-01' }), 'Age')));
 throws('age future', () => call('age-calculator', { dob: '2030-01-01', asof: '2026-01-01' }), 'before');
 throws('age empty', () => call('age-calculator', { dob: '' }), 'date of birth');
+r = call('age-calculator', { dob: '2020-01-31', asof: '2020-03-01' }); eq('age jan31 to mar1 leap', stat(r, 'Age'), '0 years, 1 month, 1 day');
+r = call('age-calculator', { dob: '2019-01-31', asof: '2019-03-01' }); eq('age jan31 to mar1 nonleap', stat(r, 'Age'), '0 years, 1 month, 1 day');
+r = call('age-calculator', { dob: '2020-08-31', asof: '2020-10-01' }); eq('age aug31 to oct1', stat(r, 'Age'), '0 years, 1 month, 1 day');
+r = call('age-calculator', { dob: '2020-05-31', asof: '2020-07-01' }); eq('age may31 to jul1', stat(r, 'Age'), '0 years, 1 month, 1 day');
+r = call('age-calculator', { dob: '2020-01-31', asof: '2020-02-29' }); eq('age jan31 to feb29', stat(r, 'Age'), '0 years, 0 months, 29 days');
 
 // EMI
 r = call('emi-calculator', { p: '500000', rate: '8.5', t: '5' }); eq('emi value', stat(r, 'Monthly EMI'), '₹10,258.27'); eq('emi n', stat(r, 'Number of payments'), '60 months');

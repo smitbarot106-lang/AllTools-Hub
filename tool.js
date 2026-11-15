@@ -148,8 +148,13 @@
   btnCopy.addEventListener('click', function () {
     if (!last) return;
     var text = typeof last.text === 'string' ? last.text : (last.stats || []).map(function (s) { return s[0] + ': ' + s[1]; }).join('\n');
-    copyText(text).then(function () { show('ok', 'Copied to your clipboard.'); },
-      function () { show('err', 'Your browser blocked copying. Select the text and copy it by hand.'); });
+    var orig = btnCopy.textContent;
+    copyText(text).then(function () {
+      show('ok', 'Copied to your clipboard.');
+      btnCopy.textContent = 'Copied!';
+      setTimeout(function () { btnCopy.textContent = orig; }, 2000);
+    },
+    function () { show('err', 'Your browser blocked copying. Select the text and copy it by hand.'); });
   });
 
   btnDown.addEventListener('click', function () {
