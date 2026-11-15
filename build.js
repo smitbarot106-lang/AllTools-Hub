@@ -98,6 +98,8 @@ function layout(o) {
 <meta name="twitter:image" content="${SITE}/og-image.svg">${o.noindex ? '\n<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4624647370340615"
+     crossorigin="anonymous"></script>
 <script src="/site.js"></script>${ld}
 </head>
 <body${o.bodyAttr || ''}>
@@ -334,7 +336,7 @@ function seoFiles() {
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self'; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 `);
 }
 
