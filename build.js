@@ -95,7 +95,7 @@ function layout(o) {
 <meta property="og:url" content="${url}">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:image" content="${SITE}/og-image.svg">
-<meta name="twitter:image" content="${SITE}/og-image.svg">${o.noindex ? '\n<meta name="robots" content="noindex">' : ''}
+<meta name="twitter:image" content="${SITE}/og-image.svg">${o.noindex ? '\n<meta name="robots" content="noindex">' : ''}${o.extraHead ? '\n' + o.extraHead : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4624647370340615"
@@ -167,7 +167,7 @@ ${CATEGORIES.map(c => {
   write('index.html', layout({
     title: 'AllTools Hub - Free Online Tools for Text, Calculators and Developers',
     desc: 'Free online tools that run in your browser: word counter, loan and GST calculators, JSON formatter, password generator, unit converters and more. No sign-up.',
-    path: '/', body, scripts: '<script src="/tools.js"></script>\n<script src="/home.js"></script>',
+    path: '/', extraHead: '<meta name="google-site-verification" content="IJoQ3jtkGflEm8lZiyXrhtS3oLgVRDWqT22zVBc_IsQ" />', body, scripts: '<script src="/tools.js"></script>\n<script src="/home.js"></script>',
     ld: {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
