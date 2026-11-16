@@ -255,37 +255,57 @@ const PAGES = {
 <p>Found a mistake, or want a new tool? Please visit our <a href="/contact.html">contact page</a>.</p>`
   },
   contact: {
-    title: 'Contact AllTools Hub', desc: 'Report a bug, ask a question or suggest a new tool for AllTools Hub.',
+    title: 'Contact AllTools Hub', desc: 'Report a bug, ask a question, suggest a new tool or discuss privacy matters for AllTools Hub.',
     body: `<h1>Contact us</h1>
-<p>We would like to hear from you. You can contact us to report a bug, ask a question, or suggest a new tool.</p>
+<p>We would like to hear from you. You can contact us to report a bug, ask a question, suggest a new tool or discuss privacy matters.</p>
 <h2>How to reach us</h2>
-<p>Please open a new issue on our public project page: <a href="https://github.com/smitbarot106-lang/AllTools-Hub/issues" rel="noopener">github.com/smitbarot106-lang/AllTools-Hub/issues</a>. You will need a free GitHub account.</p>
-<h2>What to include</h2>
-<ul><li>The name of the tool and the page address.</li><li>What you did, what you expected and what happened instead.</li><li>Your browser and device, if you know them.</li></ul>
-<p>Please do not post passwords, private documents or other personal information.</p>`
+<ul>
+<li><strong>Email:</strong> For general inquiries, feedback or privacy questions, write to us at <a href="mailto:smitbarot106@gmail.com">smitbarot106@gmail.com</a>.</li>
+<li><strong>GitHub Issues:</strong> For bug reports, calculation errors or technical suggestions, open an issue on our project tracker: <a href="https://github.com/smitbarot106-lang/AllTools-Hub/issues" rel="noopener" target="_blank">github.com/smitbarot106-lang/AllTools-Hub/issues</a> (requires a free GitHub account).</li>
+</ul>
+<h2>What to include in a bug report</h2>
+<ul>
+<li>The tool name and page address (URL).</li>
+<li>What inputs you entered, what result you expected and what happened instead.</li>
+<li>Your device, operating system and browser version, if known.</li>
+</ul>
+<p>Please do not send passwords, private documents or sensitive personal information.</p>`
   },
   privacy: {
-    title: 'Privacy Policy - AllTools Hub', desc: 'How AllTools Hub handles your data. Our tools run in your browser and we do not collect what you type.',
-    body: `<h1>Privacy Policy</h1><p class="updated">Last updated: 14 November 2026</p>
-<p>This page explains, in plain language, what happens to information when you use AllTools Hub.</p>
+    title: 'Privacy Policy - AllTools Hub', desc: 'How AllTools Hub handles your data. Our tools run in your browser, inputs stay on your device, and advertising disclosures.',
+    body: `<h1>Privacy Policy</h1><p class="updated">Last updated: 16 November 2026</p>
+<p>This page explains, in plain language, how AllTools Hub handles information when you visit our website and use our free online tools.</p>
 <h2>What you enter into our tools</h2>
-<p>Our tools run inside your web browser. The text, numbers and settings you enter are processed on your own device. We do not upload them to our servers, and we cannot see them.</p>
-<h2>Information we do not collect</h2>
-<ul><li>We do not ask you to create an account.</li><li>We do not ask for your name, email address or phone number to use a tool.</li><li>We do not set advertising or tracking cookies, and we do not currently use analytics or show ads.</li></ul>
-<h2>What is stored on your device</h2>
-<p>If you choose light or dark mode, your choice is saved in your browser's local storage so the site can remember it. It stays on your device. You can clear it at any time in your browser settings.</p>
-<h2>Hosting</h2>
-<p>This website is hosted on Cloudflare Pages. Like most web hosts, Cloudflare may process technical information such as your IP address and browser type to deliver the site and keep it secure. Please see Cloudflare's own privacy policy for details.</p>
-<h2>Links to other sites</h2>
-<p>Our contact page links to GitHub. We are not responsible for the privacy practices of other websites.</p>
+<p>AllTools Hub is designed with privacy by default. Every tool on this website runs directly inside your web browser using client-side JavaScript.</p>
+<ul>
+<li>The text, numbers, calculations and settings you enter are processed locally in your device's memory.</li>
+<li>We do not transmit, upload, log or store your tool inputs or calculation results on our servers or with any third party.</li>
+<li>When you copy results to your clipboard or download a generated file, that action takes place entirely on your device.</li>
+</ul>
+<h2>Google AdSense and advertising cookies</h2>
+<p>We have integrated Google AdSense code on our website for account verification and site review.</p>
+<ul>
+<li><strong>Current status:</strong> AllTools Hub is currently under review by Google AdSense. Advertisements are not yet actively being served on the website.</li>
+<li><strong>Prospective ad serving and cookies:</strong> Once our website is approved and advertising begins, third-party vendors, including Google, will use cookies to serve ads based on your prior visits to this website or other websites on the internet.</li>
+<li><strong>Personalized advertising:</strong> Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to AllTools Hub and/or other sites across the internet.</li>
+<li><strong>Opt-out choices:</strong> You can opt out of personalized advertising at any time by visiting <a href="https://adssettings.google.com/" rel="noopener" target="_blank">Google Ads Settings</a>. You can also opt out of third-party advertising cookies by visiting <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info/choices</a> or <a href="https://www.youronlinechoices.com/" rel="noopener" target="_blank">youronlinechoices.com</a>.</li>
+</ul>
+<h2>Web analytics</h2>
+<p>Cloudflare Web Analytics client-side tracking (beacon script) is not currently active on this website. We do not use third-party analytics trackers, tracking pixels or session recording scripts.</p>
+<h2>Local storage on your device</h2>
+<p>We do not use cookies for site functionality. Our website uses your browser's local storage (<code>localStorage</code>) solely to remember your preferred theme (<code>light</code> or <code>dark</code> mode). This setting stays on your device, contains no personal information, and can be cleared at any time in your browser settings.</p>
+<h2>Hosting and security</h2>
+<p>This website is hosted on Cloudflare Pages. As a reverse proxy and content delivery network (CDN), Cloudflare processes standard technical network connection data (such as visitor IP addresses, browser user agent strings and requested URLs) to route traffic and protect the site against attacks. We do not maintain or store access server logs directly. For details, please see the <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflare Privacy Policy</a>.</p>
+<h2>External links</h2>
+<p>Our website links to external platforms such as GitHub. We are not responsible for the privacy practices of external websites.</p>
 <h2>Changes to this policy</h2>
-<p>If we add features such as analytics or advertising, we will update this page before they start and change the date above.</p>
+<p>If our advertising status changes or if we introduce new features, we will update this page and revise the date above.</p>
 <h2>Questions</h2>
-<p>If you have a question about privacy, please use our <a href="/contact.html">contact page</a>.</p>`
+<p>If you have any questions about this privacy policy, please email us at <a href="mailto:smitbarot106@gmail.com">smitbarot106@gmail.com</a> or visit our <a href="/contact.html">contact page</a>.</p>`
   },
   terms: {
     title: 'Terms and Conditions - AllTools Hub', desc: 'The terms for using AllTools Hub and its free online tools.',
-    body: `<h1>Terms and Conditions</h1><p class="updated">Last updated: 14 November 2026</p>
+    body: `<h1>Terms and Conditions</h1><p class="updated">Last updated: 16 November 2026</p>
 <p>By using AllTools Hub, you agree to these terms. If you do not agree, please do not use the website.</p>
 <h2>Use of the website</h2>
 <p>You may use our tools for personal and business purposes. Please do not misuse the website: do not try to break it, overload it, or use it to do anything illegal.</p>
@@ -295,6 +315,8 @@ const PAGES = {
 <p>To the extent allowed by law, AllTools Hub is not responsible for any loss or damage that comes from using the website or relying on a result from a tool.</p>
 <h2>Our content</h2>
 <p>The design, text and code of this website belong to AllTools Hub. Please do not copy the website as a whole and present it as your own. The text and data you enter into a tool remain yours.</p>
+<h2>Third-party services</h2>
+<p>AllTools Hub includes links to external websites and integrates third-party services such as Google AdSense. Google AdSense code is installed on the site for account verification; advertisements are not yet actively served while site approval is pending. When you follow external links (such as to GitHub) or interact with third-party features, your use is subject to the terms and privacy policies of those third-party providers.</p>
 <h2>Changes</h2>
 <p>We may change the website, the tools or these terms at any time. The date above shows the latest update.</p>
 <h2>Contact</h2>
@@ -302,7 +324,7 @@ const PAGES = {
   },
   disclaimer: {
     title: 'Disclaimer - AllTools Hub', desc: 'Important notes about the calculators and tools on AllTools Hub. Results are for information only.',
-    body: `<h1>Disclaimer</h1><p class="updated">Last updated: 14 November 2026</p>
+    body: `<h1>Disclaimer</h1><p class="updated">Last updated: 16 November 2026</p>
 <p>The tools on AllTools Hub give general information and estimates. They are not professional advice.</p>
 <h2>Financial and tax calculators</h2>
 <p>The GST, discount, percentage and EMI calculators give estimates. Real taxes, bank fees and loan terms can differ. Please confirm figures with your bank, tax adviser or the seller before you make a decision.</p>
