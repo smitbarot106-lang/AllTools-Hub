@@ -15,11 +15,18 @@ Live site: https://alltools-hub.pages.dev
 | `tool.js` | Builds the form on each tool page and runs the Copy, Download and Reset buttons |
 | `home.js` | Homepage search |
 | `site.js` | Light / dark mode |
-| `build.js` | Creates all the HTML pages, sitemap and robots.txt from `tools.js` |
+| `content.js` | The written content: the "About", "How it works", worked example, limits and FAQ for each tool, plus the category pages and guides |
+| `build.js` | Creates all the HTML pages, sitemap and robots.txt from `tools.js` and `content.js` |
 | `test.js` | Automatic tests for every tool |
-| `_headers` | Security settings used by Cloudflare Pages |
+| `test-site.js` | Checks the generated site: titles, descriptions, links, sitemap, security headers, and that every worked example matches the real tool |
+| `dev-server.js` | Small local web server for previewing the site (`node dev-server.js 3000`) |
+| `_headers`, `vercel.json` | Security headers (Cloudflare Pages and Vercel) |
+| `ads.txt` | AdSense seller declaration. Replace the publisher ID before going live |
+| `og-image.png`, `apple-touch-icon.png` | Social preview and home-screen icons |
 
-Cloudflare Pages needs no build step. Leave the build command empty and the output folder as the root.
+The generated `.html` files are committed, so hosting needs no build step. Leave the build command empty and the output folder as the root.
+
+After changing `tools.js` or `content.js`, run `node build.js && node test.js && node test-site.js`.
 
 ## How to add a new tool
 
